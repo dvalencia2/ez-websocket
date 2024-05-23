@@ -31,10 +31,11 @@ export const createWebSocketServer = (server: Server, config: ServerConfig): Web
     });
 
     // Send stored messages for relevant events to the newly connected client
-    const storedMessages = await retrieveMessages('someEvent'); // Replace 'someEvent' with actual event
+    const storedMessages = await retrieveMessages('exampleEvent'); // Replace 'someEvent' with actual event
     storedMessages.forEach((msg) => {
       if (ws.readyState === WebSocket.OPEN) {
-        ws.send(JSON.stringify(msg));
+        //send stored messages as binary
+        ws.send(Buffer.from(msg, 'utf8'));
       }
     });
   });

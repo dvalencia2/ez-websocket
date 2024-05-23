@@ -13,7 +13,8 @@ export const storeMessage = async (event: string, message: any): Promise<void> =
 export const retrieveMessages = async (event: string): Promise<any[]> => {
   try {
     const messages = await redis.lrange(event, 0, -1);
-    return messages.map((msg) => JSON.parse(msg));
+    console.log(`Retrieved messages from Redis for event "${event}":`, messages);
+    return messages;
   } catch (err) {
     log(`Error retrieving messages from Redis: ${err}`);
     return [];
