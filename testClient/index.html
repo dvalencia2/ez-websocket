@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WebSocket Client</title>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2VyMTIzIiwidXNlcm5hbWUiOiJleGFtcGxlVXNlciIsImlhdCI6MTcxNjQyOTcxMiwiZXhwIjoxNzE2NDMzMzEyfQ.ref1ux4DIo1guYOtsicuk4qriSx8o2x7becNEAK_JFM";  // Replace with your generated token
+      const ws = new WebSocket("ws://localhost:3000", token);
+
+      ws.onopen = () => {
+        console.log("Connected to WebSocket server");
+
+        // Send a message after authentication
+        const message = JSON.stringify({ event: "exampleEvent", data: "Hello, World!" });
+        ws.send(message);
+      };
+
+      ws.onmessage = async (event) => {
+        console.log("Message received from server:", event.data);
+        const receivedMessage = JSON.parse(await event.data.text());
+        if (receivedMessage.event === "exampleEvent") {
+          handleExampleEvent(receivedMessage.data);
+        }
+      };
+
+      ws.onclose = () => {
+        console.log("Disconnected from WebSocket server");
+      };
+
+      ws.onerror = (error) => {
+        console.error("WebSocket error:", error);
+      };
+
+      function handleExampleEvent(data) {
+        console.log("Handling example event with data:", data);
+        // Implement your event-specific logic here
+      }
+    });
+  </script>
+</head>
+<body>
+  <h1>WebSocket Client</h1>
+  <p>Open the console to see the WebSocket messages.</p>
+</body>
+</html>
